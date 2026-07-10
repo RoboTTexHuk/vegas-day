@@ -975,6 +975,17 @@
             box-shadow: 0 0 16px rgba(230, 168, 23, 0.1);
         }
 
+        .avatar-grid-highlight {
+            animation: avatarGridPulse 1.6s ease-out;
+            border-radius: var(--radius-sm);
+        }
+
+        @keyframes avatarGridPulse {
+            0% { box-shadow: 0 0 0 0 rgba(230, 168, 23, 0.5); }
+            60% { box-shadow: 0 0 0 10px rgba(230, 168, 23, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(230, 168, 23, 0); }
+        }
+
         .avatar-option svg {
             width: 28px;
             height: 28px;
@@ -1395,7 +1406,7 @@
             <!-- Tab 4: Profile -->
             <div class="tab-content" id="tab-profile">
                 <div class="profile-header">
-                    <div class="avatar-container">
+                    <div class="avatar-container" onclick="openAvatarPicker()">
                         <div class="avatar-inner" id="avatar-display"></div>
                         <div class="avatar-edit-badge">
                             <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round">
@@ -1864,6 +1875,17 @@
             renderAvatarDisplay();
             renderAvatarGrid();
             showToast('Avatar updated', 'success');
+        }
+
+        function openAvatarPicker() {
+            const grid = document.getElementById('avatar-grid');
+            if (!grid) return;
+            grid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            grid.classList.remove('avatar-grid-highlight');
+            void grid.offsetWidth; // restart animation if triggered again
+            grid.classList.add('avatar-grid-highlight');
+            setTimeout(() => grid.classList.remove('avatar-grid-highlight'), 1600);
+            showToast('Choose your avatar below', 'success');
         }
 
         function updateUsername() {
